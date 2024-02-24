@@ -5,20 +5,30 @@ function App() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [fullName, setFullName] = useState('');
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
-    setIsFormValid(event.target.value !== '' && lastName !== '');
+    setFirstNameError('');
   };
 
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
-    setIsFormValid(firstName !== '' && event.target.value !== '');
+    setLastNameError('');
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (firstName === '' || lastName === '') {
+      if (firstName === '') {
+        setFirstNameError('Please fill out this field.');
+      }
+      if (lastName === '') {
+        setLastNameError('Please fill out this field.');
+      }
+      return;
+    }
     setFullName(`${firstName} ${lastName}`);
   };
 
@@ -34,6 +44,7 @@ function App() {
             value={firstName}
             onChange={handleFirstNameChange}
           />
+          {firstNameError && <p style={{ color: 'red' }}>{firstNameError}</p>}
         </div>
         <div>
           <label htmlFor="lastName">Last Name:</label>
@@ -43,8 +54,9 @@ function App() {
             value={lastName}
             onChange={handleLastNameChange}
           />
+          {lastNameError && <p style={{ color: 'red' }}>{lastNameError}</p>}
         </div>
-        <button type="submit" disabled={!isFormValid}>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       {fullName && <p>Full Name: {fullName}</p>}
     </div>
